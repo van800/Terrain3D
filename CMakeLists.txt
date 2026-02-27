@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.17)
 if(CMAKE_C_COMPILER)
 endif()
 
-set(LIBNAME "EXTENSION-NAME" CACHE STRING "The name of the library")
+set(LIBNAME "libterrain" CACHE STRING "The name of the library")
 set(GODOT_PROJECT_DIR "project" CACHE STRING "The directory of a Godot project folder")
 
 # Make sure all the dependencies are satisfied
@@ -43,14 +43,14 @@ project(godot-cpp-template
         LANGUAGES CXX
 )
 
+file(GLOB SOURCES "src/**")
+
 add_library(${LIBNAME} SHARED)
 
 target_sources(${LIBNAME}
         PRIVATE
-        src/register_types.cpp
-        src/register_types.h
-        src/example_class.cpp
-        src/example_class.h
+
+        ${SOURCES}
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
@@ -77,7 +77,7 @@ set_target_properties(${LIBNAME}
         OUTPUT_NAME "${LIBNAME}${GODOTCPP_SUFFIX}"
 )
 
-set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/bin/${GODOTCPP_PLATFORM}")
+set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/addons/terrain_3d/bin")
 
 add_custom_command(TARGET ${LIBNAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIBNAME}>" "${GODOT_PROJECT_BINARY_DIR}/$<TARGET_FILE_NAME:${LIBNAME}>"
