@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.17)
 if(CMAKE_C_COMPILER)
 endif()
 
-set(LIBNAME "EXTENSION-NAME" CACHE STRING "The name of the library")
+set(LIBNAME "libterrain" CACHE STRING "The name of the library")
 set(GODOT_PROJECT_DIR "project" CACHE STRING "The directory of a Godot project folder")
 
 # Make sure all the dependencies are satisfied
@@ -35,22 +35,29 @@ include(GodotCPPModule)
 get_target_property(GODOTCPP_SUFFIX godot::cpp GODOTCPP_SUFFIX)
 get_target_property(GODOTCPP_PLATFORM godot::cpp GODOTCPP_PLATFORM)
 
-# Now we can specify our own project which will inherit any global cmake properties or variables that have been defined.
-project(godot-cpp-template
+project(Terrain3D
         VERSION 1.0
-        DESCRIPTION "This repository serves as a quickstart template for GDExtension development with Godot 4.0+."
-        HOMEPAGE_URL "https://github.com/enetheru/godot-cpp-template/tree/main"
+        DESCRIPTION "A high performance, editable terrain system for Godot 4."
+        HOMEPAGE_URL "https://github.com/TokisanGames/Terrain3D"
         LANGUAGES CXX
 )
+
+file(GLOB_RECURSE SOURCES "src/**")
+file(GLOB_RECURSE GAME_SOURCES "project/**")
+list(FILTER GAME_SOURCES EXCLUDE REGEX "project/.godot")
+
+# only visual-studio-generators 
+#include_external_msproject(Terrain3D 
+#        "${CMAKE_SOURCE_DIR}/project/Terrain3D.csproj"
+#        PLATFORM "Any CPU")
+# alternative could be to build the csproj with dotnet
 
 add_library(${LIBNAME} SHARED)
 
 target_sources(${LIBNAME}
         PRIVATE
-        src/register_types.cpp
-        src/register_types.h
-        src/example_class.cpp
-        src/example_class.h
+        ${SOURCES}
+        ${GAME_SOURCES}
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
@@ -77,7 +84,7 @@ set_target_properties(${LIBNAME}
         OUTPUT_NAME "${LIBNAME}${GODOTCPP_SUFFIX}"
 )
 
-set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/bin/${GODOTCPP_PLATFORM}")
+set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/addons/terrain_3d/bin")
 
 add_custom_command(TARGET ${LIBNAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIBNAME}>" "${GODOT_PROJECT_BINARY_DIR}/$<TARGET_FILE_NAME:${LIBNAME}>"
