@@ -43,14 +43,22 @@ project(godot-cpp-template
         LANGUAGES CXX
 )
 
-file(GLOB SOURCES "src/**")
+file(GLOB_RECURSE SOURCES "src/**")
+file(GLOB_RECURSE GAME_SOURCES "project/**")
+list(FILTER GAME_SOURCES EXCLUDE REGEX "project/.godot")
+
+# only visual-studio-generators 
+#include_external_msproject(Terrain3D 
+#        "${CMAKE_SOURCE_DIR}/project/Terrain3D.csproj"
+#        PLATFORM "Any CPU")
+# alternative could be to build the csproj with dotnet
 
 add_library(${LIBNAME} SHARED)
 
 target_sources(${LIBNAME}
         PRIVATE
-
         ${SOURCES}
+        ${GAME_SOURCES}
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
