@@ -35,11 +35,10 @@ include(GodotCPPModule)
 get_target_property(GODOTCPP_SUFFIX godot::cpp GODOTCPP_SUFFIX)
 get_target_property(GODOTCPP_PLATFORM godot::cpp GODOTCPP_PLATFORM)
 
-# Now we can specify our own project which will inherit any global cmake properties or variables that have been defined.
-project(godot-cpp-template
+project(Terrain3D
         VERSION 1.0
-        DESCRIPTION "This repository serves as a quickstart template for GDExtension development with Godot 4.0+."
-        HOMEPAGE_URL "https://github.com/enetheru/godot-cpp-template/tree/main"
+        DESCRIPTION "A high performance, editable terrain system for Godot 4."
+        HOMEPAGE_URL "https://github.com/TokisanGames/Terrain3D"
         LANGUAGES CXX
 )
 
