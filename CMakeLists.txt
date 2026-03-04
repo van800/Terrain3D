@@ -43,14 +43,15 @@ project(godot-cpp-template
         LANGUAGES CXX
 )
 
-file(GLOB SOURCES "src/**")
+file(GLOB_RECURSE SOURCES "src/**")
+file(GLOB GAME_SOURCES "project/**")
 
 add_library(${LIBNAME} SHARED)
 
 target_sources(${LIBNAME}
         PRIVATE
-
         ${SOURCES}
+        ${GAME_SOURCES}
 )
 
 # Fetch a list of the xml files to use for documentation and add to our target
